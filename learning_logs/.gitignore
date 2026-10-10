@@ -1,66 +1,43 @@
-__pycache__/
-.venv/
-venv/
-# Byte-compiled / optimized / DLL files
+# ===== Python =====
 __pycache__/
 *.py[cod]
+*$py.class
 *.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
 
-# Django stuff:
-*.log
-*.pot
-*.pyc
-local_settings.py
-db.sqlite3
-media/
-
-# Virtual Environment
+# ===== 虚拟环境 =====
+ll_venv/
 venv/
 env/
-ll_venv/
-.venv
-*.venv
+ENV/
+.venv/
 
-# VS Code
+# ===== Django =====
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+/media/
+/staticfiles/
+
+# ===== VS Code =====
 .vscode/
-*.code-workspace
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
-# IDE
-.idea/
-*.iml
-
-# OS
+# ===== 操作系统 =====
 .DS_Store
 Thumbs.db
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
-
-# pyenv
-.python-version
-
-# pipenv
-Pipfile.lock
-
-# poetry
-poetry.lock
-
-# ruff
-.ruff_cache/
-
-# pytest
-.pytest_cache/
-
-# node_modules (if any)
-node_modules/
-
-
-# 这个文件夹是运行 collectstatic 时生成的，不需要上传
-/staticfiles/     
-
 desktop.ini
+
+# ===== 其他 =====
+*.bak
+*.tmp
+*.swp

@@ -18,6 +18,7 @@ class Topic(models.Model):
 
 class Entry(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    #外键：ForeignKEey ,
     
     text = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)

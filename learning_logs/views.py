@@ -49,9 +49,8 @@ def topic(request, topic_id):
     # 确认请求的主题属于当前登录的用户：
     if topic.owner != request.user:
         raise Http404
-
     entries = topic.entry_set.order_by("-date_added")
-    # 返回的是一个查询集（QuerySet），里面装的是 Entry 对象，按创建时间从新到旧排列。
+    # 返回的是一个查询集（QuerySet），里面装的是 所有Entry 对象，按创建时间从新到旧排列。
     # 这些对象里包含 text、date_added 等字段，不是 URL。
 
     context = {"topic": topic, "entries": entries}
@@ -69,7 +68,13 @@ def new_topic(request):
         # Post 提交的数据，就对提交的数据进行处理：
         form = TopicForm(data=request.POST)
         if form.is_valid():
-            form.save()
+            new_topic=form.save(commit=False)
+            new_topic.owner=request.user
+            new_topic.save()
+            #创建新的主题new_topic,必须知道这个topic属于谁，也就是learning_log_topic.user不能是null空的。
+            #将new_topic手动指定字段，也就是new_topic的id是request.user
+            # form.save()
+            #原来没有用户，是superuser,可以直接form.save()。有了登录用户，就要指出是哪一个用户的哪一个主题
             return redirect("learning_logs:topics")
     # 显示空表单，或指出表单数据无效：
     context = {"form": form}
@@ -111,6 +116,20 @@ def edit_entry(request, entry_id):
     # 编辑既有的条目：
     entry = Entry.objects.get(id=entry_id)
     topic = entry.topic
+    #entry.topic 确实是一个属性，不是方法。 它是 Django 在模型层自动生成的外键访问器。
+# 在 Entry 里写了 topic = models.ForeignKey(Topic, ...)，Django 就为这条外键自动生成两个属性：
+
+# 属性	                    位置	                  作用
+# entry.topic	            在 Entry 实例上	          正向查询：从条目找到它所属的主题
+# topic.entry_set	        在 Topic 实例上	          反向查询：从主题找到它下面的所有条目
+# 所以 entry.topic 能用，是因为你在 Entry 模型里定义了 topic 这个外键字段，不是凭空冒出来的。
+# 方向	写法	含义
+# 正向        （从 Entry 到 Topic）	        entry.topic	这个条目属于哪个主题
+# 反向        （从 Topic 到 Entry）	        topic.entry_set.all()	这个主题下有哪些条目
+# 之前的 topic.entry_set.order_by(...) 用的是反向，现在 entry.topic 用的是正向。
+    
+    if topic.owner!=request.user:
+        raise Http404
 
     if request.method != "POST":
         # 初次请求，使用当前的条目填充表单：

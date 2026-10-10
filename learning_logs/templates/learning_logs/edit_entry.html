@@ -1,0 +1,18 @@
+{% extends "learning_logs/base.html" %}
+{% block content %}
+    <p><a href="{% url 'learning_logs:topic' topic_id=topic.id %}">{{ topic }}</a></p>
+    <p>欢迎来到编辑页面，重新编辑这些条目</p>
+    <form action="{% url 'learning_logs:edit_entry' entry_id=entry.id %}"
+          method='post'>
+        <!--action:告诉浏览器“把表单数据提交到哪个 URL”
+    提交后，由该 URL 对应的视图处理数据（验证、保存等）
+    视图处理完，再渲染页面返回
+    
+    第7行 的意思是：
+    用户填写表单后，点击提交，数据会 POST 到 /edit_entry/1/ 这个 URL，由 edit_entry 视图处理。
+    -->
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button type='submit'>Save change</button>
+    </form>
+{% endblock content %}

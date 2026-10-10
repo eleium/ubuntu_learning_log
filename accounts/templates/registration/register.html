@@ -1,0 +1,9 @@
+{% extends "learning_logs/base.html" %}
+{% block content %}
+    <p>欢迎来到注册页面</p>
+    <form action="{% url 'accounts:register' %}" method='post'>
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button type='submit'>注册</button>
+    </form>
+{% endblock content %}

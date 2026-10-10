@@ -1,0 +1,18 @@
+{% extends "learning_logs/base.html" %}
+{% block content %}
+'
+    <p>Topics 欢迎来到主题列表页面</p>
+    <ul>
+        {% for topic in topics %}
+            <li>
+                <a href="{% url 'learning_logs:topic' topic_id=topic.id %}">{{ topic.text }}</a>
+            </li>
+            <!--增加一个超链接，使得这个topic可以点击跳转-->
+        {% empty %}
+            <li>No topics have been added yet.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'learning_logs:new_topic' %}">Add a new topic,please</a>
+
+{% endblock content %}

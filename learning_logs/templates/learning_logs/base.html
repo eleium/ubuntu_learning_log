@@ -10,7 +10,7 @@
     <body>
         <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
             <div class="container-fluid">
-                <a class="navbar-brand" href="{% url 'learning_log:index' %}">learning_log</a>
+                <a class="navbar-brand" href="{% url 'learning_logs:index' %}">learning_log</a>
                 <button class="navbar-toggler"
                         type="button"
                         data-bs-toggle="collapse"
@@ -23,18 +23,46 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'learning_log:topics' %}">Topics主题</a>
+                            <a class="nav-link" href="{% url 'learning_logs:topics' %}">Topics主题</a>
                         </li>
                     </ul>
                     <!-- 定义导航栏左侧连接的代码到此结束。-->
+                    <!--与账户有关的链接：-->
+                    <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <span class="navbar-text me-2">hello,来啦{{ user.username }}.</span>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'accounts:register' %}">先注册</a></li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'accounts:login' %}">Login,please</a></li>
+                        {% endif %}
+                    </ul>
+                    <!--与账户有关的链接到此结束。-->
+                    {% if user.is_authenticated %}
+                        <form action="{% url 'accounts:logout' %}" method='post'>
+                            {% csrf_token %}
+                            <button type='submit' class="btn btn-outline-secondary btn-sm">登出</button>
+                        </form>
+                    {% endif %}
                 </div>
                 <!--定义导航栏可以折叠部分的代码到此结束。-->
             </div>
             <!--定义导航栏容器的代码到此结束。-->
         </nav>
         <!--定义导航栏的代码到此结束。-->
-        {% block content %}
-        {% endblock content %}
+        <main class="container">
+            <div class="pb-2 mb-2 border-bottom">
+                {% block page_header %}
+                {% endblock page_header %}
+            </div>
+            <div>
+                {% block content %}
+                {% endblock content %}
+            </div>
+        </main>
         {% bootstrap_javascript %}
     </body>
 </html>

@@ -1,4 +1,5 @@
-from django.urls import path, include
+from django.urls import include, path
+
 from . import views
 
 app_name = "accounts"
@@ -14,6 +15,5 @@ urlpatterns = [
     # 既然已经有对应的url: http://localhost:8000/login，并且是具名的login,相当于name='login',就可以编辑视图函数。
     # 但是，这个login()，由django提供，不需要自己编写。
     # 自己只需要编写模板 login.html
-
-    path('register/',views.register,name='register')
+    path("register/", views.register, name="register"),
 ]

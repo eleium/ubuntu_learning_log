@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <!-- 整个页面使用简体中文，避免浏览器弹出翻译提示 -->
+  <head>
+    <meta charset="utf-8">
+    <!-- 声明编码为 UTF-8，保证中英文和符号不乱码 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 视口设置：宽度等于设备宽度，初始缩放比例为1，适配移动端 -->
+    <title>学习笔记</title>
+    <!-- 标签页标题，显示在浏览器标签上 -->
+    {% load django_bootstrap5 %}
+    <!-- 加载 django-bootstrap5 模板标签库，以便使用下面的标签 -->
+    {% bootstrap_css %}
+    <!-- 引入 Bootstrap 5 的 CSS 样式文件 -->
+  </head>
+  <body>
+    <!-- 导航栏开始 -->
+    <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
+      <!-- 
+          nav: HTML5 语义标签，表示导航区域
+          navbar: Bootstrap 基础导航栏样式，必须写
+          navbar-expand-md: 响应式折叠，屏幕 ≥768px 时展开，<768px 时折叠为汉堡菜单
+          navbar-light: 浅色主题，文字使用深色
+          bg-light: 浅灰色背景
+          mb-4: 下边距 4 级（约 1.5rem），与下方内容拉开距离
+          border: 添加一圈边框
+        -->
+      <div class="container-fluid">
+        <!-- 
+              container-fluid: 流体容器，宽度始终 100%，铺满整个屏幕，
+              内容左右有内边距，避免贴边
+            -->
+        <a class="navbar-brand" href="{% url 'learning_logs:index' %}">learning_log</a>
+        <!-- 
+              导航栏品牌标识：显示网站名称，点击跳转首页
+              navbar-brand: Bootstrap 样式，使文字更大更醒目
+              href: 使用 Django 的 {% url %} 标签动态生成首页链接
+            -->
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarCollapse"
+                aria-controls="navbarCollapse"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+          <!-- 
+                  汉堡按钮：仅在窄屏（<768px）显示
+                  navbar-toggler: 按钮样式，显示汉堡图标
+                  type="button": 声明是普通按钮，避免意外提交表单
+                  data-bs-toggle="collapse": 点击时触发折叠行为
+                  data-bs-target="#navbarCollapse": 指定折叠目标为 id="navbarCollapse" 的元素
+                  aria-controls="navbarCollapse": 无障碍属性，说明控制哪个区域
+                  aria-expanded="false": 当前折叠状态为收起，点击后自动变为 true
+                  aria-label="Toggle navigation": 无障碍名称，供屏幕阅读器朗读
+                -->
+          <span class="navbar-toggler-icon"></span>
+          <!-- 汉堡图标：三条横线的视觉元素 -->
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <!-- 
+                  collapse: 默认隐藏该区域（折叠状态）
+                  navbar-collapse: 导航栏专用样式，宽屏时水平排列，窄屏时配合 collapse 折叠
+                  id="navbarCollapse": 与按钮的 data-bs-target 对应，使按钮能控制此区域
+                -->
+          <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <!-- 
+                      navbar-nav: 导航栏专用列表样式，水平排列，去掉圆点
+                      me-auto: margin-end: auto，使列表右侧占满剩余空间，将后续元素推到最右边
+                      mb-2: 窄屏折叠时底部留出 0.5rem 间距
+                      mb-md-0: 在 ≥768px 时取消下边距
+                    -->
+            <li class="nav-item">
+              <!-- nav-item: 导航项样式 -->
+              <a class="nav-link" href="{% url 'learning_logs:topics' %}">Topics主题</a>
+              <!-- 
+                          nav-link: 导航链接样式，去掉下划线，有悬停效果
+                          href: 动态生成主题列表页面的 URL
+                          显示文字：Topics主题
+                        -->
+            </li>
+          </ul>
+          <!-- 定义导航栏左侧连接的代码到此结束。-->
+          <!--与账户有关的链接：-->
+          <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+            <!--开启一个新的无序列表，用来装右侧的所有账号相关链接。
+                      navbar-nav：导航栏专用的列表样式。
+                      ms-auto: 强制把列表推到最右侧.
+                      mb-2窄屏（折叠时）底部留点空隙,两个单位，mb-md-0:宽屏时去掉空隙。-->
+            {% if user.is_authenticated %}
+              <li class="nav-item">
+                <!--一个导航项-->
+                <span class="navbar-text me-2">hello,来啦{{ user.username }}.</span>
+                <!--<span> 是行内元素，这里用来纯文本显示，不需要点击跳转。
+                navbar-text：Bootstrap 样式，让文字在导航栏里垂直居中对齐，不至于歪掉。
+                me-2：右侧留一点边距（margin-end），和后面的元素（如果有的话）隔开。-->
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'accounts:register' %}">先注册</a></li>
+              <!--跳转到accounts/register页面-->
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'accounts:login' %}">Login,please</a></li>
+            {% endif %}
+          </ul>
+          <!--与账户有关的链接到此结束。-->
+          {% if user.is_authenticated %}
+            <form action="{% url 'accounts:logout' %}" method='post'>
+              {% csrf_token %}
+              <button type='submit' class="btn btn-outline-secondary btn-sm">登出</button>
+              <!--button:HTML 的按钮标签。点击时触发特定动作（通常是提交表单）。
+                            type='submit':默认 提交
+                            btn：	Bootstrap 基础按钮样式，让按钮更好看、有点击反馈。
+                            btn-outline-secondary：	轮廓样式：透明背景，灰色边框，鼠标悬停时会填充灰色。
+                            btn-sm	小尺寸按钮，让按钮更紧凑，适合导航栏。-->
+            </form>
+          {% endif %}
+        </ul>
+      </div>
+      <!-- 折叠区域结束 -->
+    </div>
+    <!-- 容器结束 -->
+  </nav>
+  <!-- 导航栏结束 -->
+  <main class="container">
+    <!--网页的主体内容区域，主要作用是定义页面的主体框架，并给子模板预留两个“坑位”。逐行解释如下：
+          <main>：HTML5 的语义标签，表示页面的主体内容。一个页面通常只能有一个 <main>，里面放最核心的内容。
+          class="container"：Bootstrap 的容器类。
+          作用是让内容水平居中，左右留出内边距，并且宽度随着屏幕大小响应式变化（不会贴边）。-->
+    <div class="pb-2 mb-2 border-bottom">
+      <!--pb-2：padding-bottom 的缩写，底部内边距 2 级（约 0.5rem），让内容离底边框有点距离
+                  mb-2：margin-bottom 的缩写，底部外边距 2 级（约 0.5rem），让这个 div 和下面的内容拉开一点距离。
+                  border-bottom：给这个 div 加一条底边框线，用来分隔“页头”和“正文”。-->
+      {% block page_header %}
+      {% endblock page_header %}
+      <!--Django 模板标签。定义一个名为 page_header 的块（block）。
+                   子模板（比如 topics.html）可以覆盖这个块，在这里插入页面的标题或大标题。
+                   如果子模板没写这个块，这里就是空的，但底部的边框线还是会显示-->
+    </div>
+    <div>
+      {% block content %}
+      {% endblock content %}
+    </div>
+  </main>
+  {% block content %}
+  {% endblock content %}
+  <!-- 内容块：子模板会在此处插入具体页面内容 -->
+  {% bootstrap_javascript %}
+  <!-- 引入 Bootstrap 5 的 JavaScript 文件，使折叠等交互功能生效 -->
+</body>
+</html>

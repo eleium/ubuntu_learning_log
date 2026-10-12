@@ -1,6 +1,5 @@
 {% extends "learning_logs/base.html" %}
 {% block content %}
-'
     <p>Topics 欢迎来到主题列表页面</p>
     <ul>
         {% for topic in topics %}
@@ -12,7 +11,5 @@
             <li>No topics have been added yet.</li>
         {% endfor %}
     </ul>
-
     <a href="{% url 'learning_logs:new_topic' %}">Add a new topic,please</a>
-
 {% endblock content %}

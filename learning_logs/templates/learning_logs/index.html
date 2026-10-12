@@ -1,4 +1,38 @@
 {% extends "learning_logs/base.html" %}
+{% block page_header %}
+    <!--Django 模板标签。声明一个名为 page_header 的块。-->
+    <div class="p-3 mb-4 bg-light border rounded-3">
+        <!--最外层的卡片容器，把标题、介绍和按钮包在一起。
+            p-3：内边距 3 级（约 1rem），让内容不贴边框。
+            mb-4：下外边距 4 级（约 1.5rem），让这个卡片和下方内容拉开距离。
+            bg-light：浅灰色背景。
+            border：加一圈默认边框。
+            rounded=3（需改为 rounded-3）：给卡片加圆角。-->
+        <div class="container-fluid py-4">
+            <!--内层容器，给内容再加一层内边距。
+                container-fluid：宽度占满整行。
+                py-4：上下内边距 4 级（约 1.5rem），让文字和卡片边框之间有充足空间。-->
+            <h1 class="display-3">Trace your learning.(跟踪)</h1>
+            <!--<h1>：一级标题，页面里最重要的标题。
+                display-3：Bootstrap 的超大号标题样式，比普通 h1 更大更醒目，适合首页大标题。
+                显示文字：“Trace your learning.(跟踪)”。-->
+            <p class="lead">
+                <!--<p>：段落标签。
+                    lead：Bootstrap 样式，让段落文字更大、更醒目，适合作为引导性文字。-->
+                Make your own Learning Log, and keep a list of the topics you're learning about,
+                Whenever you learn something new about a topic, make an entry summarizing what you've learned.
+            </p>
+            <a class="btn btn-primary btn-lg mt-1"
+               href="{% url 'accounts:register' %}">Register注册 »</a>
+            <!--<a>：超链接，点击跳转。
+                    btn btn-primary：Bootstrap 按钮样式，蓝色主按钮。
+                    btn-lg：大号按钮，更显眼。
+                    mt-1：上外边距 1 级，和上面的段落拉开一点距离。
+                    href=" url 'accounts:register' "：Django 动态生成注册页链接。
+                   Register注册 »：按钮上的文字。-->
+        </div>
+    </div>
+{% endblock page_header %}
 {% block content %}
     <p>今天去南山街，碰到了两只小猫。---> 来自主页index</p>
 {% endblock content %}

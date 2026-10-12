@@ -34,7 +34,8 @@ INSTALLED_APPS = [
     # 添加项目的app
     "learning_logs",
     "accounts",
-    
+    # 第三方应用程序：
+    "django_bootstrap5",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -131,13 +132,11 @@ MAILERS = {
 }
 
 
-#我自己的设置：
-#登陆成功后重新定向到这个url:
-LOGIN_REDIRECT_URL ='learning_logs:index'
+# 我自己的设置：
+# 登陆成功后重新定向到这个url:
+LOGIN_REDIRECT_URL = "learning_logs:index"
 
-#如果登出、注销成功后，重新定向到这个url:
-LOGOUT_REDIRECT_URL ='learning_logs:index'
+# 如果登出、注销成功后，重新定向到这个url:
+LOGOUT_REDIRECT_URL = "learning_logs:index"
 
-LOGIN_URL= 'accounts:login'
-
-
+LOGIN_URL = "accounts:login"

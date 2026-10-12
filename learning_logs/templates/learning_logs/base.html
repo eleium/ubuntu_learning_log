@@ -1,24 +1,40 @@
-<p>
-    <a href="{% url 'learning_logs:index' %}">I love python ! Be happy !</a> </p>
-    <p><a href="{% url 'learning_logs:topics' %}">进入主题列表</a></p>
-
-    {% if user.is_authenticated %}
-    Hello,{{ user.username }}.
-    {% else %}
-    <a href="{% url 'accounts:register' %}">请注册</a>
-        <a href="{% url 'accounts:login' %}"> 请登录 </a>
-    {% endif %}
-</p>
-{% block content %}
-{% endblock content %}
-
-{% if user.is_authenticated %}
-<hr />
-<form action="{% url 'accounts:logout' %}"登出 method='post'>
-    {% csrf_token %}
-    <button type='submit'>确认登出注销</button>
-</form>
-    {% endif %}
-
-
-<!-- user.is_authenticated:检测登录状态，是否登录。已登录：hello,未登录：跳转到登录页面，或者未登录作为访客浏览。-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>我的学习笔记</title>
+        {% load django_bootstrap5 %}
+        {% bootstrap_css %}
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'learning_log:index' %}">learning_log</a>
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navbarCollapse"
+                        aria-controls="navbarCollapse"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'learning_log:topics' %}">Topics主题</a>
+                        </li>
+                    </ul>
+                    <!-- 定义导航栏左侧连接的代码到此结束。-->
+                </div>
+                <!--定义导航栏可以折叠部分的代码到此结束。-->
+            </div>
+            <!--定义导航栏容器的代码到此结束。-->
+        </nav>
+        <!--定义导航栏的代码到此结束。-->
+        {% block content %}
+        {% endblock content %}
+        {% bootstrap_javascript %}
+    </body>
+</html>

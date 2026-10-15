@@ -1,17 +1,18 @@
-
 {% extends "learning_logs/base.html" %}
+{% load django_bootstrap5 %}
+{% block page_header %}
+    <!--功能与block content 相同，区别是这个代表页头。block content 是主体-->
+    <h2>Log in to your account.请登录</h2>
+{% endblock page_header %}
 {% block content %}
-
-{% if form.errors %}
-<p>输入的名字与密码不匹配，重新输入名字或密码。</p>
-{% endif %}
-
-<form action="{% url 'accounts:login' %}" method='post'>
-    {% csrf_token %}
-    {{ form.as_div }}
-    <button type='submit'>登录</button>
-
-</form>
-
+    {% if form.errors %}
+        <p>输入的名字与密码不匹配，重新输入名字或密码。</p>
+    {% endif %}
+    <form action="{% url 'accounts:login' %}" method='post'>
+        {% csrf_token %}
+        {% bootstrap_form form %}<!--用bootstrap5的样式渲染表单-->
+        {% bootstrap_button button_type='submit' content='Log in' %}
+        <!-- form.as_div 是原生的，被bootstrap_form form 替代了。-->
+    </form>
 {% endblock content %}
 <!--button按钮触发提交动作，然后accounts下的login函数执行登录动作。而这个函数是django 内置的。-->
